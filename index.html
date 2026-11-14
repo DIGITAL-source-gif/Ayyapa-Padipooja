@@ -1264,5 +1264,39 @@ $("#againBtn").addEventListener("click", () => {
 });
 })();
 </script>
+   <section id="rsvp" style="max-width:420px;margin:30px auto;font-family:sans-serif">
+  <h2>RSVP</h2>
+  <form id="rsvpForm">
+    <input name="name" placeholder="Your name" required style="width:100%;padding:10px;margin:6px 0">
+    <input name="phone" placeholder="Phone number" style="width:100%;padding:10px;margin:6px 0">
+    <select name="attending" style="width:100%;padding:10px;margin:6px 0">
+      <option>Yes, I will attend</option>
+      <option>Sorry, can't attend</option>
+    </select>
+    <input name="guests" type="number" min="1" value="1" placeholder="Number of people" style="width:100%;padding:10px;margin:6px 0">
+    <textarea name="message" placeholder="Message (optional)" style="width:100%;padding:10px;margin:6px 0"></textarea>
+    <button type="submit" style="width:100%;padding:12px;background:#d35400;color:#fff;border:0;font-size:16px">Send RSVP</button>
+  </form>
+  <p id="rsvpMsg"></p>
+</section>
+
+<script>
+const RSVP_URL = "https://script.google.com/macros/s/AKfycbzxa1RPQSynQUwzefhxtFZku_oVe3Vo8RQ7pFoOwko13sy5dZ35nnSc3T17QAqAnZjD/exec";
+document.getElementById("rsvpForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target, msg = document.getElementById("rsvpMsg");
+  form.querySelector("button").disabled = true;
+  msg.textContent = "Sending...";
+  try {
+    await fetch(RSVP_URL, { method: "POST", mode: "no-cors",
+      body: new URLSearchParams(new FormData(form)) });
+    msg.textContent = "🙏 Thank you! Your RSVP is received. Swamiye Saranam Ayyappa!";
+    form.reset();
+  } catch {
+    msg.textContent = "Something went wrong, please try again.";
+  }
+  form.querySelector("button").disabled = false;
+});
+</script>
 </body>
 </html>
